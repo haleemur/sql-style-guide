@@ -1,8 +1,6 @@
 # SQL Style Guide
 
-**goal**: Let's not make reading SQL harder than it already is. This 
-means keeping lines short, and trading aggressively compact code for 
-regularity and ease of modification.
+**goal**: Let's not make reading SQL harder than it already is. This means keeping lines short, and trading aggressively compact code for regularity and ease of modification. All code, even analysts' SQL is read more often than it is written.
 
 ## Line Length
 
@@ -239,14 +237,18 @@ Indent the `SELECT` query within a CTE. With multiple CTEs, the comma rules appl
       SELECT
           books.user_id
         , MIN(book.created_at) book_at
+    
       FROM reservation books
+    
       GROUP BY 
           books.user_id
     )
     SELECT
         TO_CHAR(first_books.book_at, 'YYYY-MM') first_book_month
       , COUNT(*) bookers
+    
     FROM first_book
+    
     GROUP BY 
         TO_CHAR(first_books.book_at, 'YYYY-MM')
 
@@ -258,7 +260,9 @@ Indent the `SELECT` query within a CTE. With multiple CTEs, the comma rules appl
           book.user_id
         , MIN(books.created_at) book_at
         , 'first_book'::varchar event_type
+      
       FROM reservation books
+      
       GROUP BY 
           books.user_id
     )
@@ -267,7 +271,9 @@ Indent the `SELECT` query within a CTE. With multiple CTEs, the comma rules appl
           sess.user_id
         , MIN(sess.created_at) sess_at
         , 'first_session'::varchar event_type
+      
       FROM sessions sess
+      
       GORUP BY 
           sess.user_id
     )
@@ -276,7 +282,9 @@ Indent the `SELECT` query within a CTE. With multiple CTEs, the comma rules appl
           TO_CHAR(first_book.book_at, 'YYYY-MM') event_month
         , event_type
         , COUNT(*) event_count
+      
       FROM first_book
+      
       GROUP BY 1, 2
     )
     , month_sess AS (
@@ -284,7 +292,9 @@ Indent the `SELECT` query within a CTE. With multiple CTEs, the comma rules appl
           TO_CHAR(first_book.book_at, 'YYYY-MM') event_month
         , event_type
         , COUNT(*) event_count
+        
       FROM first_book
+      
       GROUP BY 1, 2
     )
     SELECT * FROM month_books
@@ -309,7 +319,9 @@ and you'll have to debug one of the trickiest bugs in SQL
 ### WHY? Try running these queries
 
     SELECT NULL = TRUE;
-    SELECT NULL != TRUE
+    
+    SELECT NULL != TRUE;
+    
     SELECT NULL != FALSE;
     
 In particular, the practice of allowing `NULL` in a Boolean column should be frowned upon. Go yell at your application 
