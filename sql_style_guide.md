@@ -69,7 +69,9 @@ repository, the following is okay.
 If there's a naming / aliasing convention set up, use it. Generally speaking, table & column names should be `lower case` with `under_score` separating words. 1 letter aliases should really be avoided in committed code.
 
 
-## Indentation & Spaces
+## Indentation & Blank Lines
+
+Put a Blank Line between each clause, as above.
 
 Indentation is useful to show where expressions belongs. Proper indentation should
 also be employed to break down a long expression (> 100 characters) over multiple 
@@ -120,7 +122,7 @@ Use brackets whenever there are both `AND` and `OR` present in the conjugate. No
         users.created_at > '2016-01-01'
     AND (users.role = 'admin' OR users.role = 'moderator')
 
-### REALLY Bad, omission changes the logic, as default operator precedence kicks in.
+### REALLY Bad, omission changes the logic, as default operator precedence kicks in
         users.created_at > '2016-01-01'
     AND users.role = 'admin' 
      OR users.role = 'moderator'
@@ -299,14 +301,16 @@ Define the window expression at the end of the query if your DB allows it. Postg
 Putting them inline in the `SELECT` clause decreases legibility, due to long lines. 
 
 
-### NULL Values Caveat.
+### NULL Values Caveat
 
 If a field accepts `NULL`, always wrap it in a COALESCE with sensible default before comparing. Avoid this, 
 and you'll have to debug one of the trickiest bugs in SQL 
 
-### WHY? Try running this query
+### WHY? Try running these queries
 
-    SELECT NULL = TRUE
-
-In particular, the practice of allowing `NULL` in a Boolean column should be avoided. Go yell at your application 
-developer the next time you see it.
+    SELECT NULL = TRUE;
+    SELECT NULL != TRUE
+    SELECT NULL != FALSE;
+    
+In particular, the practice of allowing `NULL` in a Boolean column should be frowned upon. Go yell at your application 
+developer the next time you see one.
