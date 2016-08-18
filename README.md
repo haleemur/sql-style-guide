@@ -216,6 +216,11 @@ Here, the indentation is used to show membership to a clause, and each clause se
         users.id
       , users.email
 
+### Also Good
+
+    SELECT users.id
+         , users.email
+         
 **FROM Block:** A new join on a new line, each join condition on a separate line, 
 indented to align with the `JOIN`. 
 
@@ -234,13 +239,34 @@ indented to align with the `JOIN`.
 
     WHERE book.checkin_at IS NOT NULL
 
-Notice the first `ON` aligns with `JOIN`, while the 2nd aligns with `LEFT JOIN`. 
-In both case, they're aligning with their respective clauses
+Notice the first `ON` aligns with `JOIN`, while the 2nd aligns with `LEFT JOIN`. In both cases, they're aligning with their respective clauses
 
 The `FROM`, `JOIN`, `LEFT JOIN` are all left aligned. This block also left aligns
 with `SELECT`. 
 
 **WHERE Block:** With just 1 condition, place it on the same line as above, or put it indented (4 spaces) on the next line, if there are more conditions, put the expressions on separate lines below, and follow the advice on conjugating Boolean Operators.
+
+### Good
+
+    WHERE book.checkin_at IS NOT NULL
+
+### Also Good
+
+    WHERE book.checkin_at IS NOT NULL
+      AND book.is_complete = TRUE
+
+### Also Good
+
+    WHERE 
+          book.checkin_at IS NOT NULL
+      AND book.is_complete = TRUE
+
+### Bad
+
+    WHERE book.checkin_at IS NOT NULL
+    AND book.is_complete = TRUE
+    
+*... but you wouldn't make this mistake because you've read the section on Boolean Operators*
 
 **GROUP BY Block:** If using field positions, comma separate the numbers on 1 line. 
 If using field expressions or names, the Comma Separated List rules apply.
@@ -256,6 +282,13 @@ If using field expressions or names, the Comma Separated List rules apply.
       , book.created_at
       , book.checkin_at
       , inv.created_at 
+
+### Also Good
+
+    GROUP BY users.email
+           , book.created_at
+           , book.checkin_at
+           , inv.created_at 
 
 ### Bad
  
@@ -368,16 +401,25 @@ Putting them inline in the `SELECT` clause decreases legibility, due to long lin
 
 ### NULL Values Caveat
 
-If a field accepts `NULL`, always wrap it in a COALESCE with sensible default before comparing. Avoid this, 
-and you'll have to debug one of the trickiest bugs in SQL 
+If a field accepts `NULL`, always wrap it in a `COALESCE` OR `NVL` function with sensible default before comparing. Avoid doing this, and you'll have to debug one of the trickiest bugs in SQL.
 
 ### WHY? Try running these queries
 
-    SELECT NULL = TRUE;
+    SELECT NULL = TRUE; -- returns NULL
     
-    SELECT NULL != TRUE;
+    SELECT NULL != TRUE; -- returns NULL
     
-    SELECT NULL != FALSE;
+    SELECT NULL != FALSE; -- returns NULL
+    
+    SELECT NULL IS NULL IS NULL; -- returns FALSE
     
 In particular, the practice of allowing `NULL` in a Boolean column should be frowned upon. Go yell at your application 
 developer the next time you see one.
+
+## Misc. comments
+
+* Put all dimensions at the top of the `SELECT` list, and all aggregates (or windowed fields) at the bottom. 
+  
+  This makes it easy to evaluate what is doing the grouping and what is being aggregated, allows one to copy-paste into the `GROUP BY` clause, or build it easily by specifying position. *PROTIP: you can count the number of dimensions by subtracting the line numbers between the first & last dimension*
+
+* todo: other misc. comments
