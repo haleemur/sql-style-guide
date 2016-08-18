@@ -13,7 +13,7 @@
 Keep it under 100 characters. Fewer than 80 characters is preferable, but not always possible. 
 Greater than 100 should not be accepted. Try to break complex expressions into multiple lines.
 
-Most complex expressions will have natural newline points.
+Most complex expressions will have natural newline points at the (infix) operators.
 
 ### Good
 
@@ -32,9 +32,34 @@ Most complex expressions will have natural newline points.
     THEN 'free-domain' 
     ELSE 'company-domain' END domain_type 
 
+Even though it is common to put all the conditions in the same line, it is much more readable if broken up into multiple lines, and the operands are aligned rather than the operator with the preceding operand.
 
-Even though it is common to put all the conditions in the same line, it is much more readable if broken up into multiple lines.
+### Good
 
+    ,   orders.subtotal
+      - orders.discount
+      + orders.tax
+      + orders.shipping AS payable
+      
+### Bad
+
+    , orders.subtotal -
+      orders.discount +
+      orders.tax + 
+      orders.shipping AS payable
+      
+### Ugly
+    
+    , orders.subtotal
+      - orders.discount
+      + orders.tax 
+      + orders.shipping AS payable
+
+### Also Ugly, but acceptable for very short expressions
+
+    , orders.subtotal - orders.discount + orders.tax + orders.shipping AS payable
+    
+    
 ## Variables, Column & Table Names
 
 ### Usage in queries
@@ -43,6 +68,7 @@ Even though it is common to put all the conditions in the same line, it is much 
 * Specify the table alias (or full name) when referring to columns. This avoids future name collisions when more joins are added, and makes diffs easier to read.
 * Aliases are meant to be short & descriptive (3 ~ 5 characters is good, IMO).
 * 1 letter aliases are to be avoided in committed code. *Might be okay for one off queries*
+* `AS` is optional when declaring aliases or labels, because the alias **should** be the last word in a *fairly short* line. Be consistent with the internal guideline.
 
 ### Bad
 
