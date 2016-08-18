@@ -309,7 +309,7 @@ Always add a comment if:
 * A custom user defined function is being used.
 * An `anti-join` or `set-difference` is being used, as this spans both the `FROM` clause & `WHERE` clause.
   In this case, annotate the join, specifiying what condition *SHOULD NOT* be removed from the `WHERE` clause.
-* *TODO: more examples of tricky situations*
+* todo: more examples of tricky situations
 
 ### CTEs & Subqueries
 
