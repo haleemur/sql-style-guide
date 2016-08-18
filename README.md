@@ -135,11 +135,17 @@ The alias is clear in this context, but joining to `cancelled_reservation` with 
 ### Naming Database objects
 
 * If there's a naming / aliasing convention set up, adhere to it. *e.g. If **every body** agrees that `u` is an unambiguous alias for `users` table, then its okay, I guess, even though it is contrary to the advice given above.*
+
 * Avoid SQL reserved words, i.e. don't name a table or column `user`, or timestamp.
+
 * Avoid spaces, or anything else that would require one to put surrounding `"` around table or column names.
+
 * *I personally prefer* table & column names & their aliases to be `lower case` with `under_score` separating words. Some people use `PascalCase` or `camelCase`. Other conventions state that tables should be `PascalCase` while columns `camelCase`. Adhere to conventions your team has used in the past.
+
 * Stick with either plurals (e.g. `users`) or singular (e.g. `reservation`) for table names. The plural form indicates that the table is a collecion of many records, while the singular refers to the type of entity being stored. *Note that in this document I mix & match. This is because the examples are inspired by a database I have worked on that was designed / implemented by someone else. Don't be that person.*
+
 * All Keys should have the common suffix. This helps identify relationships easily to later developers. `_id` (*or `Id`*) is a classic choice you can't go wrong with (e.g. `user_id`). Its like ordering chocolate ice cream. 
+
 * Try to make your primary key names *guessable*. Both `users.id` and `users.user_id` are great candidates for the primary key of the `users` table. If you go with 1 approach, be consistent across all your tables. Obvious exclusions to this rule are association proxy tables or calendar tables, which may have composite keys that follow a natural name other than `entity_name_id`, e.g. the primay key for the calendar table might be `date`.
 
 
@@ -327,8 +333,10 @@ the reviewer can get the context more easily.
 Always add a comment if:
 
 * A custom user defined function is being used.
+
 * An `anti-join` or `set-difference` is being used, as this spans both the `FROM` clause & `WHERE` clause.
   In this case, annotate the join, specifiying what condition *SHOULD NOT* be removed from the `WHERE` clause.
+
 * todo: more examples of tricky situations
 
 ### CTEs & Subqueries
@@ -443,5 +451,7 @@ developer the next time you see one.
   This makes it easy to evaluate what is doing the grouping and what is being aggregated, allows one to copy-paste into the `GROUP BY` clause, or build it easily by specifying position. *PROTIP: you can count the number of dimensions by subtracting the line numbers between the first & last dimension*
 
 * Make every effort to keep queries short. Other people don't like reading your long code. Longer code leads to more errors. 
+
 * It's great that you can write complex where clauses. You know what's better? Altering your schemas so that incomprehensible `(condition 1 AND condition 2 AND (condition 3 OR condition 4)) OR NOT (condition 5 AND condition 1)` expression is not needed.
+
 * Don't repeat yourself. Convert frequently used CTEs into views.
