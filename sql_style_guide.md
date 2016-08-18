@@ -36,10 +36,9 @@ Even though it is common to put all the conditions in the same line, it is much 
 * Alias long table names.
 * Specify the table alias (or full name) when referring to columns. This avoids future name collisions when more joins are added, and makes diffs easier to read.
 * Aliases are meant to be short & descriptive (3 ~ 5 characters is good, IMO).
-* 1 letter aliases are to be avoided in committed code.
-* For a one off query that is not being committed to a repository, the following is okay. 
+* 1 letter aliases are to be avoided in committed code. *Might be okay for one off queries*
 
-### BAD
+### Bad
 
     SELECT
         user_id
@@ -65,7 +64,7 @@ Adding a join would likely confuse the database due to field name collisions. It
 
     GROUP BY 1
 
-This is clear in this context, but joining to `cancelled_reservation` with the aliasing convention yields the abbreviation `cr`. Joined again to `credit_card` may produce `cc`. At which point this convention starts to show its lackings.
+The alias is clear in this context, but joining to `cancelled_reservation` with the same aliasing convention yields the abbreviation `cr`. Joined again to `credit_card` may produce `cc`. At which point this convention starts to show its lackings.
 
 ### Good all the times
 
@@ -134,8 +133,8 @@ Use brackets whenever there are both `AND` and `OR` present in the conjugate. No
 
         users.created_at > '2016-01-01'
     AND (
-           users.role = 'admin'
-        OR users.role = 'moderator'
+            users.role = 'admin'
+         OR users.role = 'moderator'
         )
 
 ### Bad
@@ -170,14 +169,12 @@ occassionally in the `FROM` clause, `WINDOW` expressions, and queries with multi
     book.checkin_at
 
 This is tricky, so read carefully. If one needs to add a new field to `GOOD`, it causes a 1 line diff, But
-a 2 line diff to `BAD`. The same applies if we remove the last field `book.checkin_at` from the list. It is
-very rare that a query is edited to remove the first field in the list. That's why this rule makes sense.
+a 2 line diff to `BAD`. The extra diff is due to the `,` at the end of `book.checkin_at`. The same applies if we remove the last field `book.checkin_at` from the list. 
 
 
 ### Clause dependent indentation
 
-Here, the indentation is used to show membership to a clause, and each clause sets 
-its own level of indentation. 
+Here, the indentation is used to show membership to a clause, and each clause sets its own level of indentation. 
 
 **SELECT Block**: First field is indented 4 spaces, 2nd field onwards indented with 2 spaces
 
@@ -209,7 +206,7 @@ In both case, they're aligning with their respective clauses
 The `FROM`, `JOIN`, `LEFT JOIN` are all left aligned. This block also left aligns
 with `SELECT`. 
 
-**WHERE BLOCK:** With just 1 condition, place it on the same line as above, or put it indented (4 spaces) on the next line, if there are more conditions, put the expressions on separate lines below, and follow the advice on conjugating Boolean Operators.
+**WHERE Block:** With just 1 condition, place it on the same line as above, or put it indented (4 spaces) on the next line, if there are more conditions, put the expressions on separate lines below, and follow the advice on conjugating Boolean Operators.
 
 **GROUP BY Block:** If using field positions, comma separate the numbers on 1 line. 
 If using field expressions or names, the Comma Separated List rules apply.
@@ -232,7 +229,7 @@ If using field expressions or names, the Comma Separated List rules apply.
 
 **ORDER BY Block, LIMIT Block:** Same rules as `GROUP BY` Block
 
-**HAVING BLOCK:** Same rules as `WHERE` clause. 
+**HAVING Block:** Same rules as `WHERE` clause. 
 
 ### Comments
 
@@ -254,7 +251,7 @@ a temporary table.
 
 Indent the `SELECT` query within a CTE. With multiple CTEs, the comma rules apply.
 
-### GOOD
+### Good
 
     WITH 
       first_books AS (
@@ -276,7 +273,7 @@ Indent the `SELECT` query within a CTE. With multiple CTEs, the comma rules appl
     GROUP BY 
         TO_CHAR(first_books.book_at, 'YYYY-MM')
 
-### GOOD
+### Good
 
     WITH 
       first_books AS (
