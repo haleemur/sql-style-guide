@@ -4,10 +4,10 @@
 
 ## Line Length
 
-Keep it under 100 characters. Fewer than 80 characters is preferable, but not 
-always possible. Greater than 100 should not be accepted. Try to break complex
-expressions into multiple lines. Most complex expressions will have natural 
-newline points.
+Keep it under 100 characters. Fewer than 80 characters is preferable, but not always possible. 
+Greater than 100 should not be accepted. Try to break complex expressions into multiple lines.
+
+Most complex expressions will have natural newline points.
 
 ### Good
 
@@ -27,13 +27,29 @@ newline points.
     ELSE 'company-domain' END domain_type 
 
 
-Even though it is common to put all the conditions in the same line, it is 
-much more readable if broken up into multiple lines.
+Even though it is common to put all the conditions in the same line, it is much more readable if broken up into multiple lines.
 
 ## Variables, Column & Table Names
 
-Keep them short and descriptive. For one off code that is not being committed to a 
-repository, the following is okay. 
+### Usage in queries
+
+* Alias long table names.
+* Specify the table alias (or full name) when referring to columns. This avoids future name collisions when more joins are added, and makes diffs easier to read.
+* Aliases are meant to be short & descriptive (3 ~ 5 characters is good, IMO).
+* 1 letter aliases are to be avoided in committed code.
+* For a one off query that is not being committed to a repository, the following is okay. 
+
+### BAD
+
+    SELECT
+        user_id
+      , COUNT(id) bookings
+    FROM reservation
+    WHERE _dump IS NULL
+      AND complete = TRUE
+      AND created_at >= '2016-01-01'
+      
+Adding a join would likely confuse the database due to field name collisions. Its common for tables to have `id`, `user_id` and `created_at` column names.
 
 ### Good Sometimes
 
@@ -49,31 +65,38 @@ repository, the following is okay.
 
     GROUP BY 1
 
+This is clear in this context, but joining to `cancelled_reservation` with the aliasing convention yields the abbreviation `cr`. Joined again to `credit_card` may produce `cc`. At which point this convention starts to show its lackings.
+
 ### Good all the times
 
     SELECT
-        book.user_id
+        books.user_id
       , COUNT(book.id) bookings
 
-    FROM reservation book
+    FROM reservation books
 
-    WHERE book._dump IS NULL
-      AND book.complete = TRUE
-      AND book.created_at >= '2016-01-01'
+    WHERE books._dump IS NULL
+      AND books.complete = TRUE
+      AND books.created_at >= '2016-01-01'
 
     GROUP BY 1
 
+### Naming Database objects
 
-If there's a naming / aliasing convention set up, use it. Generally speaking, table & column names should be `lower case` with `under_score` separating words. 1 letter aliases should really be avoided in committed code.
+* If there's a naming / aliasing convention set up, adhere to it. *e.g. If **every body** agrees that `u` is an unambiguous alias for `users` table, then its okay, I guess, even though it is contrary to the advice given above.*
+* Avoid SQL reserved words, i.e. don't name a table or column `user`, or timestamp.
+* Avoid spaces, or anything else that would require one to put surrounding `"` around table or column names.
+* *I personally prefer* table & column names & their aliases to be `lower case` with `under_score` separating words. Some people use `PascalCase` or `camelCase`. Other conventions state that tables should be `PascalCase` while columns `camelCase`. Adhere to conventions your team has used in the past.
+* Stick with either plurals (e.g. `users`) or singular (e.g. `reservation`) for table names. The plural form indicates that the table is a collecion of many records, while the singular refers to the type of entity being stored. *Note that in this document I mix & match. This is because the examples are inspired by a database I have worked on that was designed / implemented by someone else. Don't be that person.*
+* All Keys should have the common suffix. `_id` (*or `Id`*) is classic choice you can't go wrong with (e.g. `user_id`). Its like ordering chocolate ice cream. This helps identify relationships easily for later developers. 
+* Try to make your primary key names *guessable*. Both `users.id` and `users.user_id` are great candidates for the primary key of the `users` table. If you go with 1 approach, be consistent across all your tables. Obvious exclusions to this rule are association proxy tables or date tables, which may have composite keys that follow a natural name, e.g. the primay key for the calendar table might be `date`.
 
 
 ## Indentation & Blank Lines
 
-Put a Blank Line between each clause, as above.
+Put a Blank Line between each clause, as in above example.
 
-Indentation is useful to show where expressions belongs. Proper indentation should
-also be employed to break down a long expression (> 100 characters) over multiple 
-lines.
+Indentation is useful to show where expressions belong. Proper indentation should also be employed to break down a long expression (> 100 characters) over multiple lines.
 
 
 ### Boolean operators
@@ -121,6 +144,7 @@ Use brackets whenever there are both `AND` and `OR` present in the conjugate. No
     AND (users.role = 'admin' OR users.role = 'moderator')
 
 ### REALLY Bad, omission changes the logic, as default operator precedence kicks in
+
         users.created_at > '2016-01-01'
     AND users.role = 'admin' 
      OR users.role = 'moderator'
