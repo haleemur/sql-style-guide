@@ -450,7 +450,7 @@ developer the next time you see one.
   
   This makes it easy to evaluate what is doing the grouping and what is being aggregated, allows one to copy-paste into the `GROUP BY` clause, or build it easily by specifying position. *PROTIP: you can count the number of dimensions by subtracting the line numbers between the first & last dimension*
 
-* Make every effort to keep queries short. Other people don't like reading your long code. Longer code leads to more errors. 
+* Make every effort to keep queries short. Other people don't like reading your long code. Longer code leads to more errors. **Remember! Your code is not your penis**
 
 * It's great that you can write complex where clauses. You know what's better? Altering your schemas so that incomprehensible `(condition 1 AND condition 2 AND (condition 3 OR condition 4)) OR NOT (condition 5 AND condition 1)` expression is not needed.
 
