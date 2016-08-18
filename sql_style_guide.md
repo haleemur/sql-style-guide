@@ -1,6 +1,12 @@
 # SQL Style Guide
 
+
+    "Elegance is not optional" 
+          - Richard A. O'Keefe
+
+
 **goal**: Let's not make reading SQL harder than it already is. This means keeping lines short, and trading aggressively compact code for regularity and ease of modification. All code, even analysts' SQL is read more often than it is written.
+
 
 ## Line Length
 
@@ -87,8 +93,8 @@ The alias is clear in this context, but joining to `cancelled_reservation` with 
 * Avoid spaces, or anything else that would require one to put surrounding `"` around table or column names.
 * *I personally prefer* table & column names & their aliases to be `lower case` with `under_score` separating words. Some people use `PascalCase` or `camelCase`. Other conventions state that tables should be `PascalCase` while columns `camelCase`. Adhere to conventions your team has used in the past.
 * Stick with either plurals (e.g. `users`) or singular (e.g. `reservation`) for table names. The plural form indicates that the table is a collecion of many records, while the singular refers to the type of entity being stored. *Note that in this document I mix & match. This is because the examples are inspired by a database I have worked on that was designed / implemented by someone else. Don't be that person.*
-* All Keys should have the common suffix. `_id` (*or `Id`*) is classic choice you can't go wrong with (e.g. `user_id`). Its like ordering chocolate ice cream. This helps identify relationships easily for later developers. 
-* Try to make your primary key names *guessable*. Both `users.id` and `users.user_id` are great candidates for the primary key of the `users` table. If you go with 1 approach, be consistent across all your tables. Obvious exclusions to this rule are association proxy tables or date tables, which may have composite keys that follow a natural name, e.g. the primay key for the calendar table might be `date`.
+* All Keys should have the common suffix. This helps identify relationships easily to later developers. `_id` (*or `Id`*) is a classic choice you can't go wrong with (e.g. `user_id`). Its like ordering chocolate ice cream. 
+* Try to make your primary key names *guessable*. Both `users.id` and `users.user_id` are great candidates for the primary key of the `users` table. If you go with 1 approach, be consistent across all your tables. Obvious exclusions to this rule are association proxy tables or calendar tables, which may have composite keys that follow a natural name other than `entity_name_id`, e.g. the primay key for the calendar table might be `date`.
 
 
 ## Indentation & Blank Lines
@@ -167,6 +173,8 @@ occassionally in the `FROM` clause, `WINDOW` expressions, and queries with multi
     users.email,
     book.created_at,
     book.checkin_at
+
+Comma omission is one of the most common errors seen during interactive querying. The *comma-at-start* style makes it easy to spot missing commas, because all the commas are aligned and the space makes it stick out. 
 
 This is tricky, so read carefully. If one needs to add a new field to `GOOD`, it causes a 1 line diff, But
 a 2 line diff to `BAD`. The extra diff is due to the `,` at the end of `book.checkin_at`. The same applies if we remove the last field `book.checkin_at` from the list. 
