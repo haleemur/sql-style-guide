@@ -176,8 +176,8 @@ occassionally in the `FROM` clause, `WINDOW` expressions, and queries with multi
 
 Comma omission is one of the most common errors seen during interactive querying. The *comma-at-start* style makes it easy to spot missing commas, because all the commas are aligned and the space makes it stick out. 
 
-This is tricky, so read carefully. If one needs to add a new field to `GOOD`, it causes a 1 line diff, But
-a 2 line diff to `BAD`. The extra diff is due to the `,` at the end of `book.checkin_at`. The same applies if we remove the last field `book.checkin_at` from the list. 
+If one needs to add a new field to `GOOD`, it causes a 1 line diff, But a 2 line diff to `BAD`. The extra diff is due to the `,` at the end of `book.checkin_at`. The same applies if we remove the last field `book.checkin_at` from the list. This
+is also useful during interactive querying. Most queries are built iteratively as expressions are added, each time an expression is added / removed the programmer only needs to modify 1 line.
 
 
 ### Clause dependent indentation
