@@ -459,7 +459,7 @@ developer the next time you see one.
 
 # Contributing to this
 
-Got something to add? 
+**Got something to add?**
 
 * Open an issue. 
 
