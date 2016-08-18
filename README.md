@@ -7,6 +7,26 @@
 
 **goal**: Let's not make reading SQL harder than it already is. This means keeping lines short, and trading aggressively compact code for regularity and ease of modification. All code, even analysts' SQL is read more often than it is written.
 
+# Raison d'etre
+
+SQL is often written by non programmers. Power Business Users, Analysts, Data Scientists & Project Owners often claim to know / understand SQL. And they're right. SQL is an extremely friendly language. Its easy to pick up due to its natural language like syntax, and its extremely concise & expressive. The diverse background of all the practitioners of SQL yield a very complex world where very few things are standardized. Just as there are a lot of really bad javascript & php out there, there are a lot of badly written sql queries in existence. 
+
+Expert Programmers who normally work in their favourite language have to deal with SQL whenever they interact with databases. They bring the flavours of their favourite language into SQL. Good intentioned as this may be, it further pollutes SQL style.
+
+A fairly common complaint is that 'SQL is easy to write, but hard to read later'. This is not true for good SQL.
+
+### What is good SQL
+
+The same reasons that make snippets of code in other languages good also hold for SQL
+
+* meaningful variable names
+* short(ish) lines
+* good indentation and whitespace
+* good use of line breaks and continuation
+* useful comments
+* efficient
+* modularity
+
 
 ## Line Length
 
@@ -401,7 +421,7 @@ Putting them inline in the `SELECT` clause decreases legibility, due to long lin
 
 ### NULL Values Caveat
 
-If a field accepts `NULL`, always wrap it in a `COALESCE` OR `NVL` function with sensible default before comparing. Avoid doing this, and you'll have to debug one of the trickiest bugs in SQL.
+If a field accepts `NULL`, always wrap it in a `COALESCE` function with sensible default before comparing. Avoid doing this, and you'll have to debug one of the trickiest bugs in SQL.
 
 ### WHY? Try running these queries
 
@@ -422,4 +442,6 @@ developer the next time you see one.
   
   This makes it easy to evaluate what is doing the grouping and what is being aggregated, allows one to copy-paste into the `GROUP BY` clause, or build it easily by specifying position. *PROTIP: you can count the number of dimensions by subtracting the line numbers between the first & last dimension*
 
-* todo: other misc. comments
+* Make every effort to keep queries short. Other people don't like reading your long code. Longer code leads to more errors. 
+* It's great that you can write complex where clauses. You know what's better? Altering your schemas so that incomprehensible `(condition 1 AND condition 2 AND (condition 3 OR condition 4)) OR NOT (condition 5 AND condition 1)` expression is not needed.
+* Don't repeat yourself. Convert frequently used CTEs into views.
