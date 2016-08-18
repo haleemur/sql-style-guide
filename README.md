@@ -455,3 +455,18 @@ developer the next time you see one.
 * It's great that you can write complex where clauses. You know what's better? Altering your schemas so that incomprehensible `(condition 1 AND condition 2 AND (condition 3 OR condition 4)) OR NOT (condition 5 AND condition 1)` expression is not needed.
 
 * Don't repeat yourself. Convert frequently used CTEs into views.
+ 
+
+# Contributing to this
+
+Got something to add? 
+
+* Open an issue. 
+
+* Discuss
+
+* Submit PR / Merge PR
+
+* Use this doc to convince the programmer next to you [logical fallacy: argument from authority][https://en.wikipedia.org/wiki/Argument_from_authority]
+
+* Profit
