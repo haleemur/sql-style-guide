@@ -467,6 +467,6 @@ Got something to add?
 
 * Submit PR / Merge PR
 
-* Use this doc to convince the programmer next to you [argument from authority](ttps://en.wikipedia.org/wiki/Argument_from_authority)
+* [Use this doc to win a flame war with the programmer next to you](https://en.wikipedia.org/wiki/Argument_from_authority)
 
-* Profit
+* Profit!!!
