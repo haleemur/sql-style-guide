@@ -9,7 +9,7 @@
 
 # Raison d'etre
 
-SQL is often written by non programmers. Power Business Users, Analysts, Data Scientists & Project Owners often claim to know / understand SQL. And they're right. SQL is an extremely friendly language. Its easy to pick up due to its natural language like syntax, and its extremely concise & expressive. The diverse background of all the practitioners of SQL yield a very complex world where very few things are standardized. Just as there are a lot of really bad javascript & php out there, there are a lot of badly written sql queries in existence. 
+SQL is often written by non programmers. Power Business Users, Analysts, Data Scientists & Project Owners often claim to know / understand SQL. And they're right. SQL is an extremely friendly language. It's easy to pick up due to its natural language like syntax, and its extremely concise & expressive. The diverse background of all the practitioners of SQL yield a very complex world where very few things are standardized. Just as there are a lot of really bad javascript & php out there, there are a lot of badly written sql queries in existence. 
 
 Expert Programmers who normally work in their favourite language have to deal with SQL whenever they interact with databases. They bring the flavours of their favourite language into SQL. Good intentioned as this may be, it further pollutes SQL style.
 
@@ -87,8 +87,8 @@ Even though it is common to put all the conditions in the same line, it is much 
 * Alias long table names.
 * Specify the table alias (or full name) when referring to columns. This avoids future name collisions when more joins are added, and makes diffs easier to read.
 * Aliases are meant to be short & descriptive (3 ~ 5 characters is good, IMO).
-* 1 letter aliases are to be avoided in committed code. *Might be okay for one off queries*
-* `AS` is optional when declaring aliases or labels, because the alias **should** be the last word in a *fairly short* line. Be consistent with the internal guideline.
+* 1 letter aliases are to be avoided in committed code. *Okay for one off queries*
+* `AS` is optional when declaring aliases or labels, because the alias **should** be the last word in a *fairly short* line, it *should* be easy to spot. Be consistent with the internal guideline.
 
 ### Bad
 
@@ -140,11 +140,11 @@ The alias is clear in this context, but joining to `cancelled_reservation` with 
 
 * Avoid spaces, or anything else that would require one to put surrounding `"` around table or column names.
 
-* *I personally prefer* table & column names & their aliases to be `lower case` with `under_score` separating words. Some people use `PascalCase` or `camelCase`. Other conventions state that tables should be `PascalCase` while columns `camelCase`. Adhere to conventions your team has used in the past.
+* One convention requires that table & column names & their aliases to be `lower case` with `under_score` separating words. Some people use `PascalCase` or `camelCase`. Other conventions state that tables should be `PascalCase` while columns `camelCase`. Adhere to conventions your team has used in the past. The important thing is that there should be a convention!
 
 * Stick with either plurals (e.g. `users`) or singular (e.g. `reservation`) for table names. The plural form indicates that the table is a collecion of many records, while the singular refers to the type of entity being stored. *Note that in this document I mix & match. This is because the examples are inspired by a database I have worked on that was designed / implemented by someone else. Don't be that person.*
 
-* All Keys should have the common suffix. This helps identify relationships easily to later developers. `_id` (*or `Id`*) is a classic choice you can't go wrong with (e.g. `user_id`). Its like ordering chocolate ice cream. 
+* All Keys used in equi-joins, should have the common suffix. This helps identify relationships easily to later developers. `_id` (*or `Id`*) is a classic choice you can't go wrong with (e.g. `user_id`). It's like ordering chocolate ice cream. 
 
 * Try to make your primary key names *guessable*. Both `users.id` and `users.user_id` are great candidates for the primary key of the `users` table. If you go with 1 approach, be consistent across all your tables. Obvious exclusions to this rule are association proxy tables or calendar tables, which may have composite keys that follow a natural name other than `entity_name_id`, e.g. the primay key for the calendar table might be `date`.
 
@@ -158,8 +158,7 @@ Indentation is useful to show where expressions belong. Proper indentation shoul
 
 ### Boolean operators
 
-In SQL, we're interested in expressions, so all the *expressions* conjugated with a boolean operator 
-(`OR` | `AND`) should align. 
+All the *expressions* conjugated with a boolean operator (`OR` | `AND`) should align. 
 
 ### Good
 
@@ -176,8 +175,8 @@ In SQL, we're interested in expressions, so all the *expressions* conjugated wit
 
 This way it is easier to scan the expressions, and spot where expressions are conjugated using the `AND` and `OR` operators. 
 
-`users.old = 'admin'` is an expression, it should be viewed in its entirety, so the extra space before the `=`
-has no utility. And what will you do if the next expression has `users.organization_id`? All the filter expressions will need laborious additions of spaces. **This will screw up the diff. DON'T BE STUPID**
+`users.old = 'admin'` is an expression, it should be viewed in its entirety, so the extra spaces before the `=`
+have no utility. And what will you do if the next expression has `users.organization_id`? All the filter expressions will need laborious additions of spaces. **This will screw up the diff. DON'T BE STUPID**
 
 Use brackets whenever there are both `AND` and `OR` present in the conjugate. Not everyone remembers operator precedence.
 
@@ -234,7 +233,7 @@ is also useful during interactive querying. Most queries are built iteratively a
 
 ### Clause dependent indentation
 
-Here, the indentation is used to show membership to a clause, and each clause sets its own level of indentation. 
+Here, the indentation is used to show membership to a clause, and each clause sets its own level of indentation. Or you can write the clause elements starting at the next line. Then, according to the comma separated list guidelines, the first line should get 4 spaces, and the subsequent ones 2, then a comma, then a space then the clause element.
 
 **SELECT Block**: First field is indented 4 spaces, 2nd field onwards indented with 2 spaces
 
@@ -247,8 +246,7 @@ Here, the indentation is used to show membership to a clause, and each clause se
     SELECT users.id
          , users.email
          
-**FROM Block:** A new join on a new line, each join condition on a separate line, 
-indented to align with the `JOIN`. 
+**FROM Block:** A new join on a new line, each join condition on a separate line, indented to align with the `JOIN`. 
 
     SELECT 
         users.email
@@ -270,7 +268,38 @@ Notice the first `ON` aligns with `JOIN`, while the 2nd aligns with `LEFT JOIN`.
 The `FROM`, `JOIN`, `LEFT JOIN` are all left aligned. This block also left aligns
 with `SELECT`. 
 
-**WHERE Block:** With just 1 condition, place it on the same line as above, or put it indented (4 spaces) on the next line, if there are more conditions, put the expressions on separate lines below, and follow the advice on conjugating Boolean Operators.
+I've also seen this in usage. While it makes the intent clear and avoids useless diffs, I find the left-alignment of `AND` with `LEFT JOIN` harder to scan.
+
+### Okay, could be better
+
+    FROM 
+        reservation book
+    JOIN 
+        users
+     ON users.id = book.user_id
+    LEFT JOIN 
+        invoice inv
+     ON inv.reservation_id = book.id
+    AND inv.is_paid = FALSE
+    
+### Slightly Better
+
+Indent by 8 spaces instead of 4
+
+    FROM 
+            reservation book
+    JOIN 
+            users
+         ON users.id = book.user_id
+    LEFT JOIN 
+            invoice inv
+         ON inv.reservation_id = book.id
+        AND inv.is_paid = FALSE
+
+But now it feels like there is too much space. And, unless you're using 8 space indentation throughout the query, this will feel out of place.
+
+
+**WHERE Block:** With just 1 condition, place it on the same line as above, or put it indented (6 spaces) on the next line, if there are more conditions, put the expressions on separate lines below, and follow the advice on conjugating Boolean Operators.
 
 ### Good
 
@@ -291,8 +320,15 @@ with `SELECT`.
 
     WHERE book.checkin_at IS NOT NULL
     AND book.is_complete = TRUE
+
+### Also Bad
+
+    WHERE
+        book.checkin_at IS NOT NULL
+    AND book.is_complete = TRUE
     
-*... but you wouldn't make this mistake because you've read the section on Boolean Operators*
+    
+*... but you wouldn't make these mistake because you've read the section on Boolean Operators*
 
 **GROUP BY Block:** If using field positions, comma separate the numbers on 1 line. 
 If using field expressions or names, the Comma Separated List rules apply.
