@@ -268,35 +268,19 @@ Notice the first `ON` aligns with `JOIN`, while the 2nd aligns with `LEFT JOIN`.
 The `FROM`, `JOIN`, `LEFT JOIN` are all left aligned. This block also left aligns
 with `SELECT`. 
 
-I've also seen this in usage. While it makes the intent clear and avoids useless diffs, I find the left-alignment of `AND` with `LEFT JOIN` harder to scan.
+Alternatively specify the tables & each join condition on a separate line indented by 6 spaces
 
-### Okay, could be better
-
-    FROM 
-        reservation book
-    JOIN 
-        users
-     ON users.id = book.user_id
-    LEFT JOIN 
-        invoice inv
-     ON inv.reservation_id = book.id
-    AND inv.is_paid = FALSE
-    
-### Slightly Better
-
-Indent by 8 spaces instead of 4
+### Also Good
 
     FROM 
-            reservation book
+          reservation book
     JOIN 
-            users
-         ON users.id = book.user_id
+          users
+       ON users.id = book.user_id
     LEFT JOIN 
-            invoice inv
-         ON inv.reservation_id = book.id
-        AND inv.is_paid = FALSE
-
-But now it feels like there is too much space. And, unless you're using 8 space indentation throughout the query, this will feel out of place.
+          invoice inv
+       ON inv.reservation_id = book.id
+      AND inv.is_paid = FALSE
 
 
 **WHERE Block:** With just 1 condition, place it on the same line as above, or put it indented (6 spaces) on the next line, if there are more conditions, put the expressions on separate lines below, and follow the advice on conjugating Boolean Operators.
