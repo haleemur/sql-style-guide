@@ -410,7 +410,7 @@ Indent the `SELECT` query within a CTE. With multiple CTEs, the comma rules appl
       
       FROM sessions sess
       
-      GORUP BY 
+      GROUP BY 
           sess.user_id
     )
     , month_books AS (
