@@ -122,7 +122,7 @@ The alias is clear in this context, but joining to `cancelled_reservation` with 
 
     SELECT
         books.user_id
-      , COUNT(book.id) bookings
+      , COUNT(books.id) bookings
 
     FROM reservation books
 
