@@ -52,6 +52,18 @@ Most complex expressions will have natural newline points at the (infix) operato
     THEN 'free-domain' 
     ELSE 'company-domain' END domain_type 
 
+### Better
+
+Regular expressions (at least in postgresql) are comparable in speed to `LIKE` pattern matching. Here, we can shorten the lines, which adds to developer comfort when scanning this code. It also reduces the number of branches that the database has to execute. Instead of
+evaluating 3 conditions and combining them with `OR`. The database only evaluates one deterministic pattern. 
+
+    CASE 
+      WHEN users.email ~ '[gmail|hotmail|yahoo]\.com$'
+      THEN 'free-domain'
+      ELSE 'company-domain'
+    END domain_type
+    
+
 Even though it is common to put all the conditions in the same line, it is much more readable if broken up into multiple lines, and the operands are aligned rather than the operator with the preceding operand.
 
 ### Good
