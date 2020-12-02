@@ -461,7 +461,7 @@ Putting them inline in the `SELECT` clause decreases legibility, due to long lin
 
 ### NULL Values Caveat
 
-When comparing two fields, if one field accepts `NULL`, try to use `IS DISTINCT FROM` or `IS NOT DISTINCT FROM`. If you are not fortunate enough to work on a database that support the syntax above, wrap the fields in a `COALESCE` function with sensible default before comparing. Avoid doing this, and you'll have to debug one of the trickiest bugs in SQL.
+When comparing two fields, if one field accepts `NULL`, try to use `IS DISTINCT FROM` or `IS NOT DISTINCT FROM`. If you are not fortunate enough to work on a database that support the syntax above, wrap the fields in a `COALESCE` function with sensible default before comparing. Avoid doing this, and you'll have to debug one of the trickiest bugs in SQL. The significance of a NULL in a given situation should be evaluated and then COALESCE()'d appropriately to improve code readability)
 
 ### WHY? Try running these queries
 
@@ -473,12 +473,15 @@ When comparing two fields, if one field accepts `NULL`, try to use `IS DISTINCT 
     
     SELECT NULL IS NULL IS NULL; -- returns FALSE
     
-In particular, the practice of allowing `NULL` in a Boolean column should be frowned upon. Go yell at your application 
-developer the next time you see one. Missing information can have many meanings, and `null` alone is not sufficient in explaining its intent. There is actually a study going on by the university of edinburg on the interpretation of nulls: 
+In particular, the practice of allowing `NULL` in a Boolean column should be frowned upon. 
+
+>How do we know what is the meaning behind a specific null value? It cannot be done systematically and it yields too many quid pro quos.
+
+There is actually a study going on by the University of Edinburgh on the interpretation of nulls: 
 
 https://data.world/blog/understanding-null-values-a-research-partnership-with-the-university-of-edinburgh/
 
-please consider taking part (if it hasn't ended already)... for humanity.
+Please consider taking part (if it hasn't ended already)... for humanity.
 
 ## Misc. comments
 
