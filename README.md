@@ -158,7 +158,16 @@ The alias is clear in this context, but joining to `cancelled_reservation` with 
 
 * All Keys used in equi-joins, should have the common suffix. This helps identify relationships easily to later developers. `_id` (*or `Id`*) is a classic choice you can't go wrong with (e.g. `user_id`). It's like ordering chocolate ice cream. 
 
-* Try to make your primary key names *guessable*. Both `users.id` and `users.user_id` are great candidates for the primary key of the `users` table. If you go with 1 approach, be consistent across all your tables. Obvious exclusions to this rule are association proxy tables or calendar tables, which may have composite keys that follow a natural name other than `entity_name_id`, e.g. the primay key for the calendar table might be `date`.
+* Try to make your primary key names *guessable*. Both `users.id` and `users.user_id` are great candidates for the primary key of the `users` table. If you go with 1 approach, be consistent across all your tables. Obvious exclusions to this rule are association proxy tables or calendar tables, which may have composite keys that follow a natural name other than `entity_name_id`, e.g. the primay key for the calendar table might be `date`. Using the same column name for the two keys across a relationship allows using `NATURAL JOIN` and specifying the join condition as `USING (col1, col2)`. While you might not use them daily, they come in handy when doing a `FULL [OUTER] JOIN`.
+
+* Use a suffix `_at`, `_hour`, `_date`, ... for datetime columns at their respective granularities. If an entity `created_at` is specified in another table, be sure to name it `entity_created_at`. 
+
+* Regarding summary / reporting tables: these tables will often have 1 row for a period grain (such as day, week, month), and columns will record the value of a quantity at period-start & period-end. I've found it most clear when the measurement columns are named with suffix `_at_start` and `_at_end`, e.g. `count_distinct_users_at_start` & `count_distinct_users_at_end`. It is _particularly_ important when a summary measurement is the result of `count(distinct <field>)`, because it is no longer guaranteed to be additive afterwards.
+
+* `users` is a hotly overloaded term. What does it even mean? Unless there is 1 organizational definition of `user`, avoid `users` in favour of something more descriptive. In a typical data-warehouse, `users` will often be a table integrated from various external systems. The transformation layer should strive to rename & unify the various `users` tables to logical (dimensional) groups.
+
+
+* Column names should be descriptive. Avoid shortening column names to save a few characters. People will read column names many more times than they will type them up.
 
 
 ## Indentation & Blank Lines
