@@ -162,13 +162,15 @@ The alias is clear in this context, but joining to `cancelled_reservation` with 
 
 * Use a suffix `_at`, `_hour`, `_date`, ... for datetime columns at their respective granularities. If an entity `created_at` is specified in another table, be sure to name it `entity_created_at`. 
 
-* Regarding summary / reporting tables: these tables will often have 1 row for a period grain (such as day, week, month), and columns will record the value of a quantity at period-start & period-end. I've found it most clear when the measurement columns are named with suffix `_at_start` and `_at_end`, e.g. `count_distinct_users_at_start` & `count_distinct_users_at_end`. It is _particularly_ important when a summary measurement is the result of `count(distinct <field>)`, because it is no longer guaranteed to be additive afterwards.
-
 * `users` is a hotly overloaded term. What does it even mean? Unless there is 1 organizational definition of `user`, avoid `users` in favour of something more descriptive. In a typical data-warehouse, `users` will often be a table integrated from various external systems. The transformation layer should strive to rename & unify the various `users` tables to logical (dimensional) groups.
-
 
 * Column names should be descriptive. Avoid shortening column names to save a few characters. People will read column names many more times than they will type them up.
 
+#### Regarding summary / reporting tables: 
+
+* these tables will often have 1 row for a period grain (such as day, week, month), and columns will record the value of a quantity at period-start & period-end. I've found it most clear when the measurement columns are named with suffix `_at_start` and `_at_end`, e.g. `count_distinct_users_at_start` & `count_distinct_users_at_end`. It is _particularly_ important when a summary measurement is the result of `count(distinct <field>)`, because it is no longer guaranteed to be additive afterwards.
+
+* some of these tables will be rollup tables (or cube tables). But any table generated as a result of `group by ... rollup / grouping sets / cube` should use a suffix to identify as such, so, if a table produces rolled up summary stats, in a following step it can be identified so that the total is not aggregated again leading to inaccuracies.
 
 ## Indentation & Blank Lines
 
